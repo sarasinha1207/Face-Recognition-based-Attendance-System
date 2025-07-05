@@ -1,0 +1,42 @@
+ID,Name,Admission No.,Degree,Year,Semester,Batch
+S001,Elon Musk,20230001,M.S. (Data Science),2nd,1,A
+S002,Donald Trump,20230002,B.E. (Software),4th,2,A
+S003,Deepika Padukone,20230003,M.S. (Data Science),2nd,1,B
+S004,Aalia Bhatt,20230004,M.Tech,2nd,1,A
+S005,Aaishwarya Rai bachchan,20230005,B.E. (Software),1st,1,B
+S006,Kareena Kapoor Khan,20230006,M.Sc (AI),3rd,2,C
+S007,Saif Ali Khan,20230007,B.Tech,1st,1,D
+S008,Sara Ali Khan,20230008,M.Sc (AI),4th,2,B
+S009,Kartik Aaryan,20230009,M.Sc (AI),4th,2,C
+S010,Henry Cavill,20230010,B.E. (Software),1st,2,D
+S011,Tom Cruise,20230011,M.Tech,4th,2,D
+S012,Virat Kohli,20230012,B.Tech,3rd,2,A
+S013,Rohit Sharma,20230013,Ph.D. (Robotics),3rd,1,C
+S014,Anushka Sharma,20230014,M.Tech,1st,1,A
+S015,Varun Dhawan,20230015,Ph.D. (Robotics),3rd,1,D
+S016,Sundar Pichai,20230016,B.E. (Software),3rd,1,C
+S017,Mark Zuckerberg,20230017,M.S. (Data Science),4th,2,B
+S018,Jeff Bezos,20230018,B.Tech,2nd,1,A
+S019,Steve Jobs,20230019,M.S. (Data Science),1st,2,D
+S020,Jasprit Bumrah,20230020,M.Sc (AI),4th,1,B
+S021,Pat Cummins,20230021,B.Sc (CS),4th,2,A
+S022,Anil Kumble,20230022,B.Tech,3rd,2,D
+S023,Steve Smith,20230023,M.Tech,4th,2,A
+S024,Adam Zampa,20230024,B.E. (Software),2nd,1,C
+S025,Aamir Khan,20230025,B.Tech,4th,1,C
+S026,M S Dhoni,20230026,Ph.D. (Robotics),4th,2,B
+S027,Rahul dravid,20230027,M.Tech,1st,2,C
+S028,Indra Nooyi,20230028,M.Tech,3rd,2,D
+S029,J. K. Rowling,20230029,B.Tech,4th,2,A
+S030,Aakshay Kumar,20230030,M.Sc (AI),4th,2,C
+S031,Barack Obama,20230031,M.Tech,1st,1,D
+S032,Travis Head,20230032,B.Sc (CS),1st,2,B
+S033,Steve Jobs,20230033,M.S. (Data Science),2nd,1,A
+S034,Mitchell Starc,20230034,M.Tech,3rd,1,B
+S035,Jonny Bairstrow,20230035,B.E. (Software),4th,2,D
+S036,Ricky Pointing,20230036,M.Tech,2nd,1,C
+S037,Ajay Devgan,20230037,M.S. (Data Science),3rd,1,A
+S038,Kajol,20230038,B.Tech,4th,2,B
+S039,Aananya Pandey,20230039,B.E. (Software),2nd,1,C
+S040,kriti Sanon,20230040,B.Sc (CS),4th,2,D
+
