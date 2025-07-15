@@ -1,4 +1,4 @@
-# 2-Attendance.py
+# 2-Attendance.py 
 import cv2
 import numpy as np
 import face_recognition
@@ -21,7 +21,26 @@ path, student_database_path, attendance_file_path, manual_attendance_file_path, 
 current_mode, status_message, status_color = "SEARCHING", "", (40, 40, 40)
 status_display_end_time, active_student_info = None, None
 
-# --- All Helper Functions (draw_text, load_student_data, etc.) are unchanged and correct ---
+# --- Button Coordinates and State Flags ---
+manual_button_coords = [795, 575, 965, 610]
+quit_button_coords = [980, 575, 1130, 610]
+
+manual_button_clicked = False
+quit_button_clicked = False
+
+# --- Mouse Click Handler ---
+def handle_mouse_click(event, x, y, flags, param):
+    global manual_button_clicked, quit_button_clicked
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if manual_button_coords[0] <= x <= manual_button_coords[2] and manual_button_coords[1] <= y <= manual_button_coords[3]:
+            print("Manual Attendance button clicked.")
+            manual_button_clicked = True
+        
+        if quit_button_coords[0] <= x <= quit_button_coords[2] and quit_button_coords[1] <= y <= quit_button_coords[3]:
+            print("Quit button clicked.")
+            quit_button_clicked = True
+
+# --- All Helper Functions are unchanged and correct ---
 def draw_text(image, text, position, font_path, font_size, color):
     try: font = ImageFont.truetype(font_path, font_size)
     except IOError: font = ImageFont.load_default()
@@ -76,7 +95,7 @@ def count_present_students(course_info):
             today_str_header = now.strftime('%d-%B-%Y')
             start_time = datetime.strptime(course_info['StartTime'], '%H:%M').strftime('%I:%M %p')
             end_time = datetime.strptime(course_info['EndTime'], '%H:%M').strftime('%I:%M %p')
-            session_header = f"-----{today_str_header}-----{course_info['CourseCode']}------{start_time} - {end_time}---(manual entry)----"
+            session_header = f"-----" + today_str_header + f"-----{course_info['CourseCode']}------{start_time} - {end_time}---(manual entry)----"
             in_correct_session = False
             for line in f:
                 stripped_line = line.strip()
@@ -94,7 +113,7 @@ def mark_attendance(student_id, name, course_info):
     full_course_id = course_info['CourseCode']; code_only = full_course_id.split(':')[0]
     start_time = datetime.strptime(course_info['StartTime'], '%H:%M').strftime('%I:%M %p')
     end_time = datetime.strptime(course_info['EndTime'], '%H:%M').strftime('%I:%M %p')
-    session_header = f"----------{today_str_header}-----------{full_course_id}-----------{start_time} - {end_time}-----------"
+    session_header = f"----------" + today_str_header + f"-----------{full_course_id}-----------{start_time} - {end_time}-----------"
     header_exists, already_marked_today = False, False
     try:
         with open(attendance_file_path, 'r', newline='') as f:
@@ -128,29 +147,28 @@ except FileNotFoundError:
 print("System ready.")
 cap = cv2.VideoCapture(0); cap.set(3, 640); cap.set(4, 480)
 
-# --- Variables for Frame Skipping ---
 frame_counter = 0
 face_locations = []
-face_matches = [] # To store the match results (True/False)
+face_matches = [] 
+
+cv2.namedWindow("Attendance System")
+cv2.setMouseCallback("Attendance System", handle_mouse_click)
 
 # --- Main Application Loop ---
 while True:
     success, img = cap.read()
-    if not success: break
+    if not success: 
+        print("Failed to grab frame from camera. Exiting.")
+        break
     
-    # 1. Resize frame ONCE for all processing
     img_small = cv2.resize(img, (0, 0), None, 0.25, 0.25)
     
-    # 2. On EVERY frame, do the LIGHTWEIGHT face location detection for smooth boxes
-    face_locations = face_recognition.face_locations(img_small)
-    
-    # 3. On every 5th frame, do the HEAVY recognition and LOGIC
     if frame_counter % 5 == 0:
+        face_locations = face_recognition.face_locations(img_small)
         face_encodings = face_recognition.face_encodings(img_small, face_locations)
         face_matches = [face_recognition.compare_faces(known_encodings, encode, tolerance=0.5) for encode in face_encodings]
 
         if current_mode == "SEARCHING" and face_locations:
-            # Find the first recognized student to process
             first_match_found = False
             for i, matches in enumerate(face_matches):
                 if True in matches:
@@ -163,9 +181,8 @@ while True:
                         current_mode = "SHOW_STATUS"
                         status_display_end_time = datetime.now() + timedelta(seconds=5)
                         first_match_found = True
-                        break # Stop after processing one student
+                        break 
             
-            # If after checking all faces, none were recognized
             if not first_match_found:
                 status_message = "Not Recognized"
                 active_student_info = None
@@ -174,52 +191,48 @@ while True:
                 
     frame_counter += 1
 
-    # --- Drawing logic runs on EVERY frame for smoothness ---
     ui_frame = background_img.copy()
     now = datetime.now()
     active_course_info = get_active_course(course_schedule)
     
-    # ... (all your static text drawing calls for headers, time, etc.)
     course_text = active_course_info['CourseCode'] if active_course_info else "---"
     total_present = count_present_students(active_course_info)
     ui_frame = draw_text(ui_frame, "ATTENDANCE SYSTEM", (160, 42), "arialbd.ttf", 32, (40,40,40))
-    ui_frame = draw_text(ui_frame, "Instructions:", (700, 30), "arialbd.ttf", 16, (40,40,40))
-    ui_frame = draw_text(ui_frame, "1. Please Press 'q' to quit.", (700, 55), "arial.ttf", 14, (40,40,40))
-    ui_frame = draw_text(ui_frame, f"Course ID: {course_text}", (770, 140), "arialbd.ttf", 24, (255, 255, 255))
+    ui_frame = draw_text(ui_frame, f"Course ID: {course_text}", (770, 100), "arialbd.ttf", 24, (255, 255, 255))
     ui_frame = draw_text(ui_frame, str(total_present), (70, 605), "arialbd.ttf", 60, (40, 40, 40))
     ui_frame = draw_text(ui_frame, "Total students present\ntoday for this course", (130, 615), "arial.ttf", 20, (40, 40, 40))
     date_day_str = f"Date: {now.strftime('%d-%b-%Y')} ({now.strftime('%A')})"
     ui_frame = draw_text(ui_frame, f"Time: {now.strftime('%I:%M:%S %p')}", (815, 630), "arialbd.ttf", 22, (255, 255, 255))
     ui_frame = draw_text(ui_frame, date_day_str, (815, 655), "arialbd.ttf", 22, (255, 255, 255))
 
-    # Draw bounding boxes on the camera image using the up-to-date locations
+    cv2.rectangle(ui_frame, (manual_button_coords[0], manual_button_coords[1]), (manual_button_coords[2], manual_button_coords[3]), (255, 195, 0), cv2.FILLED)
+    cv2.putText(ui_frame, "Manual Entry", (manual_button_coords[0] + 10, manual_button_coords[1] + 22), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+    cv2.rectangle(ui_frame, (quit_button_coords[0], quit_button_coords[1]), (quit_button_coords[2], quit_button_coords[3]), (200, 0, 0), cv2.FILLED)
+    cv2.putText(ui_frame, "Quit", (quit_button_coords[0] + 50, quit_button_coords[1] + 22), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+
     for face_loc, matches in zip(face_locations, face_matches):
-        box_color = (0, 0, 255) # Red
+        box_color = (0, 0, 255) 
         if True in matches:
-            box_color = (0, 255, 0) # Green
+            box_color = (0, 255, 0)
         y1, x2, y2, x1 = face_loc; y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
         cv2.rectangle(img, (x1, y1), (x2, y2), box_color, 3)
 
-    # Display status info
     if current_mode == "SHOW_STATUS":
         if active_student_info:
             info = active_student_info
             profile_pic_path = os.path.join(path, f"{info['ID']}.png")
             if os.path.exists(profile_pic_path):
                 profile_pic = cv2.resize(cv2.imread(profile_pic_path), (300, 300))
-                ui_frame[200:500, 790:1090] = profile_pic
+                ui_frame[170:470, 790:1090] = profile_pic
             
-            ui_frame = draw_text(ui_frame, f"Student ID: {info['ID']}", (700, 510), "arial.ttf", 20, (40,40,40))
-            ui_frame = draw_text(ui_frame, f"Name: {info['Name']}", (700, 535), "arial.ttf", 20, (40,40,40))
-            ui_frame = draw_text(ui_frame, f"Semester: {info.get('Semester', 'N/A')}", (700, 560), "arial.ttf", 20, (40,40,40))
-            ui_frame = draw_text(ui_frame, f"Batch: {info.get('Batch', 'N/A')}", (700, 585), "arial.ttf", 20, (40,40,40))
+            ui_frame = draw_text(ui_frame, f"Student ID: {info['ID']}", (700, 480), "arial.ttf", 20, (40,40,40))
+            ui_frame = draw_text(ui_frame, f"Name: {info['Name']}", (700, 500), "arial.ttf", 20, (40,40,40))
+            ui_frame = draw_text(ui_frame, f"Semester: {info.get('Semester', 'N/A')}", (700, 520), "arial.ttf", 20, (40,40,40))
+            ui_frame = draw_text(ui_frame, f"Batch: {info.get('Batch', 'N/A')}", (700, 540), "arial.ttf", 20, (40,40,40))
 
         if status_message == "Marked": status_color = (0, 150, 0)
         elif status_message == "Already Marked": status_color = (200, 150, 0)
         else: status_color = (200, 0, 0)
-        
-        if status_message == "Not Recognized":
-             ui_frame = draw_text(ui_frame, "Press 'm' for Manual Entry", (700, 75), "arial.ttf", 14, (40,40,40))
 
         ui_frame = draw_text(ui_frame, "Status:", (370, 605), "arialbd.ttf", 20, (40,40,40))
         ui_frame = draw_text(ui_frame, status_message, (370, 635), "arialbd.ttf", 24, status_color)
@@ -229,13 +242,34 @@ while True:
 
     img_resized = cv2.resize(img, (560, 420))
     ui_frame[130:550, 60:620] = img_resized
+    
     cv2.imshow("Attendance System", ui_frame)
 
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord('q'): break
-    elif key == ord('m'):
-        print("Closing main attendance system..."); cap.release(); cv2.destroyAllWindows()
-        subprocess.run(["python", "3.1-manual_attendance.py"]); print("Exiting."); break
+    cv2.waitKey(1)
 
+    # --- UPDATED GRACEFUL EXIT LOGIC ---
+    # Check if the 'Quit' button was clicked
+    if quit_button_clicked:
+        break
+    
+    # Check if the 'Manual Attendance' button was clicked
+    if manual_button_clicked:
+        break
+
+    # Check if the window's 'X' button was clicked
+    # This is the standard way to check for a closed window in OpenCV
+    if cv2.getWindowProperty("Attendance System", cv2.WND_PROP_VISIBLE) < 1:
+        # If the window is closed, ensure the manual attendance script is NOT triggered
+        manual_button_clicked = False 
+        break
+
+# --- Final Actions ---
+print("Closing application...")
 cap.release()
 cv2.destroyAllWindows()
+
+# Only open manual attendance if that specific button was the reason for exiting
+if manual_button_clicked:
+    print("Opening manual attendance entry...")
+    subprocess.run(["python", "3-Manual_attendance.py"])
+    print("Exiting.")
