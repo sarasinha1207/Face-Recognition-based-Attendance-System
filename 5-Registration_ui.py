@@ -23,17 +23,17 @@ def paste_transparent(bg, fg, box):
 try:
     logo = Image.open('logo.png').resize((100, 100)); paste_transparent(image, logo, (50, 20))
 except FileNotFoundError: print("Warning: logo.png not found.")
-draw.rounded_rectangle((170, 30, 700, 110), radius=20, fill=HEADER_COLOR_DARK_BLUE) # Topmost Attendance System header box
-draw.rounded_rectangle((50, 140, 650, 700), radius=20, fill=PANEL_COLOR_LIGHT_BLUE) # Left large Background box
-draw.rounded_rectangle((670, 140, 1230, 700), radius=20, fill=PANEL_COLOR_LIGHT_BLUE) # Right large Background box
+draw.rounded_rectangle((170, 30, 700, 110), radius=10, fill=HEADER_COLOR_DARK_BLUE) # Topmost Attendance System header box
+draw.rounded_rectangle((50, 140, 650, 700), radius=10, fill=PANEL_COLOR_LIGHT_BLUE) # Left large Background box
+draw.rounded_rectangle((670, 140, 1230, 700), radius=10, fill=PANEL_COLOR_LIGHT_BLUE) # Right large Background box
 
 # --- NEW: Three-box layout on the right panel ---
-draw.rounded_rectangle((690, 160, 1210, 250), radius=15, fill=HEADER_COLOR_DARK_BLUE) # Top instruction box
-draw.rounded_rectangle((690, 270, 1210, 600), radius=15, fill=HEADER_COLOR_DARK_BLUE) # Middle data entry box
-draw.rounded_rectangle((800, 615, 1120, 685), radius=15, fill=HEADER_COLOR_DARK_BLUE) # Bottom time box
+draw.rounded_rectangle((690, 160, 1210, 255), radius=10, fill=HEADER_COLOR_DARK_BLUE) # Top instruction box
+draw.rounded_rectangle((690, 270, 1210, 610), radius=10, fill=HEADER_COLOR_DARK_BLUE) # Middle data entry box
+draw.rounded_rectangle((800, 620, 1120, 690), radius=10, fill=HEADER_COLOR_DARK_BLUE) # Bottom time box
 
 # *** ADD THIS NEW LINE TO CREATE THE STUDENT COUNT BOX ***
-draw.rounded_rectangle((60, 630, 640, 690), radius=15, fill=BG_COLOR, outline=HEADER_COLOR_DARK_BLUE, width=2)
+draw.rounded_rectangle((60, 630, 640, 690), radius=10, fill=BG_COLOR, outline=HEADER_COLOR_DARK_BLUE, width=2)
 
 cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 filename = "Registration_UI.png"
