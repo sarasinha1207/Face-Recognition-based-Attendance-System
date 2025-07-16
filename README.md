@@ -74,21 +74,27 @@ The system was tested with [Number] individuals in the database. It was able to 
 <p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/9a4e27be-cd76-40e8-89ab-2b6f6526e666" /></p>    
 <p align="center"><em>Figure 1: A screenshot of Main Launcher</em></p>
    
-<p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/e246e82b-a532-4428-838d-76e6ec2be536" /></p>   
+<p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/6972ed7e-838a-4ab5-a4c8-682a5061718d" /></p>   
 <p align="center"><em>Figure 2: A screenshot of Register New Student</em></p>
-  
+
 <p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/46809399-1242-4a0d-9edd-f1191fa0e670" /></p>      
-<p align="center"><em>Figure 3: A screenshot of Attendance System</em></p>
-    
-<p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/effeafb7-37b3-4fe7-9c2a-5a0692fb158f" /></p>      
+<p align="center"><em>Figure 3: A screenshot of Attendance System</em></p 
+
+<p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/72747b3d-d372-4fc3-97ec-74ee14a00293" /></p> 
 <p align="center"><em>Figure 4: A screenshot of Manual Attendance</em></p>
       
 <p align="center"><img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/626a607a-0379-4820-a838-17e8c7678411" /></p>        
 <p align="center"><em>Figure 5: A screenshot of Encode Generator</em></p>
 
-<br>    
+---
+📌 **Spoofing Detection System**  
+This project includes a basic anti-spoofing mechanism designed to prevent fraudulent attendance.    
+It attempts to differentiate between a real, live face and a static photo or video by analyzing natural movements such as eye blinks and head motion. These checks help ensure that attendance is marked only for genuine, live participants.  
 
-🔒 The contents of this repository are for viewing and inspiration only. Reuse, reproduction, or redistribution is not allowed without permission.
+📸 **Image Usage Disclaimer**  
+Celebrity images are used solely for educational testing; no copyright is claimed or infringement intended.     
+   
+🔒 The contents of this repository are for viewing and inspiration only. Reuse, reproduction, or redistribution is not allowed without permission.  
 
    
 
