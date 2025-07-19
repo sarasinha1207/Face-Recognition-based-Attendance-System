@@ -69,7 +69,7 @@ The system is designed with a modular approach, as shown in the block diagram be
 <br>
      
 ## Results and Snapshots  
-The system was tested with [Number] individuals in the database. It was able to successfully recognize them in real-time under normal lighting conditions.  
+The system was tested with 50 individuals in the database. It was able to successfully recognize them in real-time under normal lighting conditions.  
 
 <p align="center"><img width="1895" height="1098" alt="image" src="https://github.com/user-attachments/assets/9a4e27be-cd76-40e8-89ab-2b6f6526e666" /></p>    
 <p align="center"><em>Figure 1: A screenshot of Main Launcher</em></p>
